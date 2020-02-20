@@ -2006,6 +2006,8 @@ in
 
   mq-cli = callPackage ../tools/system/mq-cli { };
 
+  netcoredbg = callPackage ../development/tools/netcoredbg { };
+
   nfdump = callPackage ../tools/networking/nfdump { };
 
   nfstrace = callPackage ../tools/networking/nfstrace { };
