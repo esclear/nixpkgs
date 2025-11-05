@@ -196,6 +196,7 @@ let
                         ++ map (v: "--docker-allowed-services ${escapeShellArg v}") service.dockerAllowedServices
                         ++ optional (service.dockerNetworkMode != null) "--docker-network-mode ${escapeShellArg service.dockerNetworkMode}"
                         ++ map (v: "--docker-devices ${escapeShellArg v}") service.dockerDevices
+                        ++ optional (services.dockerServicesDevices != {}) (v: "--docker-services_devices ${escapeShellArg (toJSON services.dockerServicesDevices)}") service.dockerServicesDevices
                       )
                     )
                   )
@@ -574,6 +575,19 @@ in
               ];
               description = ''
                 Expose hardware devices to `build` and helper containers.
+
+                See <https://docs.gitlab.com/runner/executors/docker/#using-host-devices> for more information.
+              '';
+            };
+            dockerServicesDevices = mkOption {
+              type = types.attrsOf (types.listOf types.str);
+              default = { };
+              example = {
+                "myregistry:5000/emulator/*" = ["/dev/kvm" "/dev/dri"];
+              };
+              description = ''
+                Expose hardware devices to services containers.
+                To mitigate risk with providing direct to hardware resources, the devices can be restricted to specific images matching glob patterns in the attrset keys.
 
                 See <https://docs.gitlab.com/runner/executors/docker/#using-host-devices> for more information.
               '';
