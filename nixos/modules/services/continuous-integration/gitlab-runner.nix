@@ -194,6 +194,7 @@ let
                         ++ map (v: "--docker-extra-hosts ${escapeShellArg v}") service.dockerExtraHosts
                         ++ map (v: "--docker-allowed-images ${escapeShellArg v}") service.dockerAllowedImages
                         ++ map (v: "--docker-allowed-services ${escapeShellArg v}") service.dockerAllowedServices
+                        ++ optional (service.dockerNetworkMode != null) "--docker-network-mode ${escapeShellArg service.dockerNetworkMode}"
                       )
                     )
                   )
@@ -552,6 +553,16 @@ in
               ];
               description = ''
                 Whitelist allowed services.
+              '';
+            };
+            dockerNetworkMode = mkOption {
+              type = types.nullOr types.str;
+              default = null;
+              example = "host";
+              description = ''
+                Control the networking mode of the build container.
+                Can be `bridge` to use bridge networking, `host` to use the host's network stack inside the container, or `none` to disable networking.
+                Any other value is taken as the name of an already existing docker network, which the build container connects to.
               '';
             };
             preGetSourcesScript = mkOption {
