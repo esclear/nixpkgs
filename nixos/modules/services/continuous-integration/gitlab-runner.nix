@@ -196,7 +196,7 @@ let
                         ++ map (v: "--docker-allowed-services ${escapeShellArg v}") service.dockerAllowedServices
                         ++ optional (service.dockerNetworkMode != null) "--docker-network-mode ${escapeShellArg service.dockerNetworkMode}"
                         ++ map (v: "--docker-devices ${escapeShellArg v}") service.dockerDevices
-                        ++ optional (services.dockerServicesDevices != {}) (v: "--docker-services_devices ${escapeShellArg (toJSON services.dockerServicesDevices)}") service.dockerServicesDevices
+                        ++ optional (service.dockerServicesDevices != {}) (v: "--docker-services_devices ${escapeShellArg (toJSON service.dockerServicesDevices)}") service.dockerServicesDevices
                       )
                     )
                   )
